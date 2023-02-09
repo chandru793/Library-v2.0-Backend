@@ -19,6 +19,10 @@ const BookSchema = new mongoose.Schema({
     trim: true,
     maxlength: [1000, "Book description cannot be more than 1000 characters"],
   },
+  image: {
+    type: String,
+    required: [true, "Must provide an image"],
+  }
 });
 
 module.exports = mongoose.model("Books", BookSchema);
