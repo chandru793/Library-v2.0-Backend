@@ -22,7 +22,7 @@ const BookSchema = new mongoose.Schema({
   image: {
     type: String,
     required: [true, "Must provide an image"],
-  }
+  },
 });
 
 module.exports = mongoose.model("Books", BookSchema);
