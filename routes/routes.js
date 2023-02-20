@@ -6,10 +6,17 @@ const {
     createBook,
     getBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    createUser,
+    loginUser,
+    quoteUser,
+    postQuoteUser
 } = require('../controllers/controllers');
 
-router.route(`/`).get(getAllBooks).post(createBook);
-router.route(`/:id`).get(getBook).patch(updateBook).delete(deleteBook);
+router.route(`/signup`).post(createUser)
+router.route(`/login`).post(loginUser)
+router.route('/quote').get(quoteUser).post(postQuoteUser);
+router.route(`/v2/library/`).get(getAllBooks).post(createBook);
+router.route(`/v2/library/:id`).get(getBook).patch(updateBook).delete(deleteBook);
 
 module.exports = router;
