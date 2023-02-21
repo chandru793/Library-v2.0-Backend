@@ -2,7 +2,7 @@ const Books = require("../model/BookSchema");
 const Users = require("../model/UserSchema");
 const asyncWrapper = require("../middleware/async");
 const jwt = require("jsonwebtoken");
-const bcrypt=require('bcryptjs')
+const bcrypt = require("bcryptjs");
 
 const getAllBooks = asyncWrapper(async (req, res) => {
   const books = await Books.find({});
@@ -51,14 +51,13 @@ const deleteBook = asyncWrapper(async (req, res) => {
 
 //SignUp
 const createUser = async (req, res) => {
-
-  const newpassword=await bcrypt.hash(req.body.password,10)
   console.log(req.body);
   try {
+    const newpassword = await bcrypt.hash(req.body.password, 10);
     await Users.create({
       name: req.body.name,
-      email: req.bodyemail,
-      password:newpassword
+      email: req.body.email,
+      password: newpassword,
     });
     res.status(201).json({ status: "ok" });
     console.log("Create Profile");
@@ -75,18 +74,22 @@ const loginUser = asyncWrapper(async (req, res) => {
   });
 
   if (!user) {
-    return{status:'error',error:'Incalid input'}
+    return { status: "error", error: "Incalid input" };
   }
 
-  const isPasswordvalid = await bcrypt.compare(req.body.password, user.password)
-  
-  isPasswordvalid(passwordValid){
+  const isPasswordvalid = await bcrypt.compare(
+    req.body.password,
+    user.password
+  );
+
+  if (isPasswordvalid) {
     const token = jwt.sign(
       {
         name: user.name,
-        email:user.email
-      }
-    )
+        email: user.email,
+      },
+      "secret123"
+    );
   }
 
   if (user) {
@@ -97,8 +100,8 @@ const loginUser = asyncWrapper(async (req, res) => {
       },
       `secret123`
     );
-    return res.json({ status: "ok", user: token });
-    console.log("User Found");
+    return res.json({ status: "ok", user: token, name: user.name });
+    // console.log("User Found");
   } else {
     return res.json({ status: "error", user: false });
     console.log("User Not found");
