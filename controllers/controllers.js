@@ -74,7 +74,7 @@ const loginUser = asyncWrapper(async (req, res) => {
   });
 
   if (!user) {
-    return { status: "error", error: "Incalid input" };
+    return res.status(401).json({ status: "error", error: "Invalid input" });
   }
 
   const isPasswordvalid = await bcrypt.compare(
@@ -82,17 +82,7 @@ const loginUser = asyncWrapper(async (req, res) => {
     user.password
   );
 
-  if (isPasswordvalid) {
-    const token = jwt.sign(
-      {
-        name: user.name,
-        email: user.email,
-      },
-      "secret123"
-    );
-  }
-
-  if (user) {
+  if (user && isPasswordvalid) {
     const token = jwt.sign(
       {
         name: user.name,
@@ -100,11 +90,11 @@ const loginUser = asyncWrapper(async (req, res) => {
       },
       `secret123`
     );
+    console.log("User Found");
     return res.json({ status: "ok", user: token, name: user.name });
-    // console.log("User Found");
   } else {
-    return res.json({ status: "error", user: false });
     console.log("User Not found");
+    return res.json({ status: "error", user: false });
   }
   res.json({ status: "ok" });
 });
@@ -138,6 +128,18 @@ const postQuoteUser = asyncWrapper(async (req, res) => {
   }
 });
 
+const decode = asyncWrapper(async (req, res) => {
+  try {
+    console.log("body", req.body);
+    console.log("token", token);
+    const user = jwt.decode(token);
+    res.json({ status: "ok", user: user });
+  } catch (error) {
+    console.log("user error");
+    res.json({ status: "error" });
+  }
+});
+
 module.exports = {
   getAllBooks,
   createBook,
@@ -148,4 +150,5 @@ module.exports = {
   loginUser,
   quoteUser,
   postQuoteUser,
+  decode,
 };

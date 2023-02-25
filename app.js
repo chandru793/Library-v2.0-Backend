@@ -4,7 +4,6 @@ require("dotenv").config();
 const cors = require("cors");
 const router = require("./routes/routes");
 const connectDB = require("./db/db");
-// const { Console } = require("console");
 const jwt= require('jsonwebtoken')
 
 const port = process.env.PORT || 8080;
