@@ -9,15 +9,12 @@ const {
   deleteBook,
   createUser,
   loginUser,
-  quoteUser,
-  postQuoteUser,
-  decode,
+  decodeUser,
 } = require("../controllers/controllers");
 
 router.route(`/signup`).post(createUser);
 router.route(`/login`).post(loginUser);
-router.route("/decode").post(decode);
-router.route("/quote").get(quoteUser).post(postQuoteUser);
+router.route(`/decode`).post(decodeUser);
 router.route(`/v2/library/`).get(getAllBooks).post(createBook);
 router
   .route(`/v2/library/:id`)

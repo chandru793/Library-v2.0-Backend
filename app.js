@@ -4,14 +4,14 @@ require("dotenv").config();
 const cors = require("cors");
 const router = require("./routes/routes");
 const connectDB = require("./db/db");
-const jwt= require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 const port = process.env.PORT || 8080;
 
 //middlewares
 app.use(express.json());
 app.use(cors());
-app.use("/api",router)
+app.use("/api", router);
 
 const start = async () => {
   try {
