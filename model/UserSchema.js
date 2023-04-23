@@ -13,9 +13,6 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Must provide password"]
-    },
-    quote: {
-        type:String,
     }
 });
 module.exports = mongoose.model("Users", UserSchema);

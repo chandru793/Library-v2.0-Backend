@@ -99,41 +99,13 @@ const loginUser = asyncWrapper(async (req, res) => {
   res.json({ status: "ok" });
 });
 
-const quoteUser = asyncWrapper(async (req, res) => {
-  const token = req.headers["x-access-token"];
-  try {
-    const decoded = jwt.verify(token, "secret123");
-    const email = decoded.email;
-    const user = await Users.findOne({ email: email });
-    return { status: "ok", quote: user.quote };
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error: "invalid token" });
-  }
-});
-
-const postQuoteUser = asyncWrapper(async (req, res) => {
-  const token = req.headers["x-access-token"];
-  try {
-    const decoded = jwt.verify(token, "secret123");
-    const email = decoded.email;
-    await Users.updateOne(
-      { email: email },
-      { $set: { quote: req.body.quote } }
-    );
-    return { status: "ok" };
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error: "invalid token" });
-  }
-});
-
-const decode = asyncWrapper(async (req, res) => {
-  try {
-    console.log("body", req.body);
-    console.log("token", token);
-    const user = jwt.decode(token);
-    res.json({ status: "ok", user: user });
+//Decode
+const decodeUser = asyncWrapper(async (req, res) => {
+  try {    
+    const token = req.body.token;
+    const user = jwt.decode(req.body.token);
+    console.log("User Decode success");
+    res.status(200).json({user: user });
   } catch (error) {
     console.log("user error");
     res.json({ status: "error" });
@@ -148,7 +120,5 @@ module.exports = {
   deleteBook,
   createUser,
   loginUser,
-  quoteUser,
-  postQuoteUser,
-  decode,
+  decodeUser,
 };
